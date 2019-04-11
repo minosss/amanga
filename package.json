@@ -1,0 +1,29 @@
+{
+    "name": "amanga",
+    "version": "0.1.0",
+    "description": "下载漫画咯",
+    "author": "mino <minoscc+dev@gmail.com>",
+    "repository": "minosss/amanga",
+    "main": "source/amanga.js",
+    "license": "MIT",
+    "bin": {
+        "amanga": "bin/cli.js"
+    },
+    "files": [
+        "bin/cli.js"
+    ],
+    "dependencies": {
+        "cheerio": "^1.0.0-rc.3",
+        "download": "^7.1.0",
+        "got": "^9.6.0",
+        "lz-string": "^1.4.4",
+        "meow": "^5.0.0",
+        "ora": "^3.4.0",
+        "ow": "^0.12.0"
+    },
+    "keywords": [
+        "cli-app",
+        "cli",
+        "downloader"
+    ]
+}
