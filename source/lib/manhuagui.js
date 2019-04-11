@@ -31,6 +31,7 @@ function decode(p, a, c, k, e, d) {
 }
 
 module.exports = async input => {
+    ow(input, ow.array.minLength(2));
     const [id, cid] = input;
     const pageUrl = `https://www.manhuagui.com/comic/${id}/${cid}.html`;
     const response = await got(pageUrl);

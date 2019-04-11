@@ -3,6 +3,7 @@ const ow = require('ow');
 const cheerio = require('cheerio');
 
 module.exports = async input => {
+    ow(input, ow.array.minLength(1));
     const [id] = input;
     // ow
     const response = await got(`https://nhentai.net/g/${id}/`);

@@ -6,37 +6,41 @@ module.exports = async (input, flags) => {
     const parser = require(`./lib/${type}`);
     const spinner = ora(`Loading ${type}`).start();
 
-    const {title, images, options} = await parser(input, flags);
+    try {
+        const {title, images, options} = await parser(input, flags);
 
-    spinner.info(`Title: ${title}`);
-    spinner.info(`Images: ${images.length}`);
+        spinner.info(`Title: ${title}`);
+        spinner.info(`Images: ${images.length}`);
 
-    // 开启info的话只输出信息
-    if (!flags.info) {
-        for (const image of images) {
-            spinner.start(`Download ${image}`);
-            try {
-                await download(
-                    encodeURI(image),
-                    outputDir || `amanga/${type}/${title}`,
-                    {
-                        timeout: 5000,
-                        ...options
-                    }
-                ).on('downloadProgress', progress => {
-                    spinner.text = `(${
-                        progress.transferred
-                    }) Download ${image}`;
-                });
-                spinner.succeed(`Done ${image}`);
-            } catch (error) {
-                spinner.fail(error.message);
+        // 开启info的话只输出信息
+        if (!flags.info) {
+            for (const image of images) {
+                spinner.start(`Download ${image}`);
+                try {
+                    await download(
+                        encodeURI(image),
+                        outputDir || `amanga/${type}/${title}`,
+                        {
+                            timeout: 5000,
+                            ...options
+                        }
+                    ).on('downloadProgress', progress => {
+                        spinner.text = `(${
+                            progress.transferred
+                        }) Download ${image}`;
+                    });
+                    spinner.succeed(`Done ${image}`);
+                } catch (error) {
+                    spinner.fail(error.message);
+                }
             }
+        } else {
+            console.dir({title, images});
         }
-    } else {
-        console.dir({title, images});
-    }
 
-    spinner.info('All Done 🎉🎉');
-    spinner.stop();
+        spinner.info('All Done 🎉🎉');
+        spinner.stop();
+    } catch (error) {
+        spinner.fail(error.message);
+    }
 };
