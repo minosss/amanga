@@ -44,8 +44,9 @@ $ amanga --help
 
 ## Supported Sites
 
--   manhuagui
--   nhentai
+-   [manhuagui](https://manhuagui.com)
+-   [nhentai](https://nhentai.net)
+-   [ishuhui](https://www.ishuhui.com)
 
 ## Develop
 
