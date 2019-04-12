@@ -7,13 +7,13 @@
 ## Install
 
 ```bash
-$ npm install -g @shayin/amanga
+$ npm install -g amanga
 ```
 
 Or Yarn:
 
 ```bash
-$ yarn global add @shayin/amanga
+$ yarn global add amanga
 ```
 
 ## Usage
