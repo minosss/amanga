@@ -17,7 +17,7 @@ const cli = meow(
     Options
         --type       source site
         --info       print title and images list
-        --output-dir the ouput directory  [default: amanga/<type>/<id>]
+        --output-dir the ouput directory  [default: amanga/<type>/<title>]
 
     Examples
         $ amanga --type nhentai 114883
