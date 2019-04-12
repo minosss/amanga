@@ -69,9 +69,11 @@ module.exports = async input => {
     // 组成图片链接
     for (const file of data.files) {
         images.push(
-            `https://i.hamreus.com${data.path}${file}?cid=${data.cid}&md5=${
-                data.sl.md5
-            }`
+            decodeURI(
+                `https://i.hamreus.com${data.path}${file}?cid=${data.cid}&md5=${
+                    data.sl.md5
+                }`
+            )
         );
     }
 
