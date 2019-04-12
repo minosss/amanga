@@ -16,6 +16,8 @@ module.exports = async input => {
                 .data('src')
                 // 1t.jpg 是缩略图
                 .replace(/([0-9]{1,})t/g, '$1')
+                // 图片路径 https://i.nhentai.net/galleries/...
+                .replace(/\/\/t/g, '//i')
         )
         .toArray();
 
