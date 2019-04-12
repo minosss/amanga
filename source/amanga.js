@@ -15,24 +15,34 @@ module.exports = async (input, flags) => {
         // 开启info的话只输出信息
         if (!flags.info) {
             for (const image of images) {
-                spinner.start(`Download ${image}`);
+                let url = image;
+                const imgOptions = {};
+                if (typeof image !== 'string') {
+                    url = image.url;
+                    if (image.name) {
+                        imgOptions.filename = image.name;
+                    }
+                }
+
+                spinner.start(`Download ${url}`);
                 try {
                     await download(
-                        encodeURI(image),
+                        encodeURI(url),
                         outputDir || `amanga/${type}/${title}`,
                         {
                             // 10s超时
                             timeout: 10000,
-                            ...options
+                            ...options,
+                            ...imgOptions
                         }
                     ).on('downloadProgress', progress => {
                         spinner.text = `(${
                             progress.transferred
-                        }) Download ${image}`;
+                        }) Download ${url}`;
                     });
-                    spinner.succeed(`Done ${image}`);
+                    spinner.succeed(`Done ${url}`);
                 } catch (error) {
-                    spinner.fail(`${error.message} ${image}`);
+                    spinner.fail(`${error.message} ${url}`);
                 }
             }
         } else {
