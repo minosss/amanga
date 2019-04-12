@@ -61,7 +61,8 @@ module.exports = async input => {
     data = data.replace(').preInit();', '');
     data = JSON.parse(`${data}`);
 
-    const title = data.cname;
+    // 把漫画名也加进去 漫画名/第几话
+    const title = `${data.bname}/${data.cname}`;
     // TODO 验证数据
     const images = [];
 
