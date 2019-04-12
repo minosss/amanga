@@ -10,7 +10,8 @@
         "amanga": "bin/cli.js"
     },
     "files": [
-        "bin/cli.js"
+        "bin/cli.js",
+        "source"
     ],
     "dependencies": {
         "cheerio": "^1.0.0-rc.3",
