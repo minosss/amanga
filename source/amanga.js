@@ -21,7 +21,8 @@ module.exports = async (input, flags) => {
                         encodeURI(image),
                         outputDir || `amanga/${type}/${title}`,
                         {
-                            timeout: 5000,
+                            // 10s超时
+                            timeout: 10000,
                             ...options
                         }
                     ).on('downloadProgress', progress => {
@@ -31,7 +32,7 @@ module.exports = async (input, flags) => {
                     });
                     spinner.succeed(`Done ${image}`);
                 } catch (error) {
-                    spinner.fail(error.message);
+                    spinner.fail(`${error.message} ${image}`);
                 }
             }
         } else {
