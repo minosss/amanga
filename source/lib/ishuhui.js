@@ -1,6 +1,8 @@
 const got = require('got');
+const ow = require('ow');
 
 module.exports = async input => {
+    ow(input, ow.array.minLength(1));
     const [id] = input;
 
     const data = await got(
@@ -15,7 +17,10 @@ module.exports = async input => {
         numberEnd,
         contentImg
     } = data.body.data;
-    const images = contentImg.map(img => ({url: img.url, name: img.name}));
+    const images = contentImg
+        .map(img => ({url: img.url, name: img.name}))
+        // 去掉最后一页广告
+        .filter(({name}) => /^[0-9]/.test(name));
 
     return {
         title: `${animeName}/${

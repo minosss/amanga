@@ -7,19 +7,19 @@
     "main": "source/amanga.js",
     "license": "MIT",
     "scripts": {
-        "test": "prettier-check {bin,source}/**/*.js"
+        "test": "prettier-check source/**/*.js"
     },
     "bin": {
-        "amanga": "bin/cli.js"
+        "amanga": "source/cli.js"
     },
     "files": [
-        "bin/cli.js",
         "source"
     ],
     "dependencies": {
         "cheerio": "^1.0.0-rc.3",
         "download": "^7.1.0",
         "got": "^9.6.0",
+        "log-symbols": "^2.2.0",
         "lz-string": "^1.4.4",
         "meow": "^5.0.0",
         "ora": "^3.4.0",
@@ -46,6 +46,9 @@
             "prettier --write",
             "git add"
         ]
+    },
+    "engines": {
+        "node": ">=8"
     },
     "publishConfig": {
         "access": "public"

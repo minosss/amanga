@@ -2,20 +2,21 @@
 'use strict';
 
 const meow = require('meow');
-const amanga = require('../source/amanga');
+const logSymbols = require('log-symbols');
 const https = require('https');
 const got = require('got');
 const ow = require('ow');
-const fs = require('fs');
+const globby = require('globby');
 const download = require('download');
+const amanga = require('./amanga');
 
 const cli = meow(
     `
     Usage
-        $ amanga <...input>
+        $ amanga --type <type> <...input>
 
     Options
-        --type       source site
+        --type       source site [required]
         --info       print title and images list
         --output-dir the ouput directory  [default: amanga/<type>/<title>]
 
@@ -37,14 +38,15 @@ const cli = meow(
     }
 );
 
+if (cli.input < 1 || !cli.flags.type) {
+    console.log(cli.help);
+    process.exit(0);
+}
+
 // cli -> lib(parser) -> download -> done
 (async () => {
-    try {
-        ow(cli.input, ow.array.minLength(1));
-        ow(cli.flags.type, ow.string);
-
-        await amanga(cli.input, cli.flags);
-    } catch (error) {
-        console.log(error.message);
-    }
-})();
+    await amanga(cli.input, cli.flags);
+})().catch(error => {
+    console.error(`\n${logSymbols.error} ${error.message}`);
+    process.exit(1);
+});
