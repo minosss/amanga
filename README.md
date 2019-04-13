@@ -26,28 +26,29 @@ $ amanga --help
     下载漫画咯
 
     Usage
-        $ amanga <...input>
+        $ amanga --type <type> <...input>
 
     Options
-        --type       source site
+        --type       source site [required]
         --info       print title and images list
-        --output-dir the ouput directory  [default: amanga/<type>/<id>]
+        --output-dir the ouput directory  [default: amanga/<type>/<title>]
 
     Examples
-        $ amanga 114883 --type nhentai
-        $ amanga 114883 --type nhentai --info
+        $ amanga --type nhentai 114883
 ```
 
 ## Todos
 
--   [ ] 支持需要点击事件，比如 ishuhui
+-   [ ] 支持需要点击事件
 -   [ ] 输出信息更友好
 
 ## Supported Sites
 
--   [manhuagui](https://manhuagui.com)
--   [nhentai](https://nhentai.net)
--   [ishuhui](https://www.ishuhui.com)
+| Name       | Type      | Home                    | Inputs |
+| ---------- | --------- | ----------------------- | ------ |
+| 看漫画     | manhuagui | https://manhuagui.com   | 2      |
+| nhentai    | nhentai   | https://nhentai.net     | 1      |
+| 鼠绘漫画网 | ishuhui   | https://www.ishuhui.com | 1      |
 
 ## Develop
 
