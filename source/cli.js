@@ -46,6 +46,8 @@ if (cli.input < 1 || !cli.flags.type) {
 // cli -> lib(parser) -> download -> done
 (async () => {
     await amanga(cli.input, cli.flags);
+
+    console.log(`\n${logSymbols.success} All Done 🎉`);
 })().catch(error => {
     console.error(`\n${logSymbols.error} ${error.message}`);
     process.exit(1);
