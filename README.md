@@ -1,10 +1,16 @@
-<h1 align="center">amanga</h1>
+<div align="center">
+    <img src="logo.png" width=100>
+</div>
 
-> 下载漫画咯
+<div align="center">
+
+下载漫画咯
 
 [![Build Status](https://travis-ci.com/minosss/amanga.svg?branch=master)](https://travis-ci.com/minosss/amanga)
 [![npm](https://img.shields.io/npm/v/amanga.svg?style=flat-square)](https://www.npmjs.com/package/amanga)
 [![code style: prettier](https://img.shields.io/badge/code_style-prettier-ff69b4.svg?style=flat-square)](https://github.com/prettier/prettier)
+
+</div>
 
 ## Install
 
