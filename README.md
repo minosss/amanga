@@ -26,6 +26,8 @@ $ yarn global add amanga
 
 ## Usage
 
+**input 是漫画地址链接的数字编号，有些需要漫画编号和集数编号 (比如 qq, manhuagui)**
+
 ```
 $ amanga --help
 
@@ -56,6 +58,7 @@ $ amanga --help
 | nhentai    | nhentai   | https://nhentai.net     | 1      |
 | 鼠绘漫画网 | ishuhui   | https://www.ishuhui.com | 1      |
 | YYLS 漫画  | yyls      | http://8comic.se        | 1      |
+| 腾讯动漫   | qq        | https://ac.qq.com       | 2      |
 
 ## Develop
 
