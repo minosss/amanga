@@ -55,6 +55,7 @@ $ amanga --help
 | 看漫画     | manhuagui | https://manhuagui.com   | 2      |
 | nhentai    | nhentai   | https://nhentai.net     | 1      |
 | 鼠绘漫画网 | ishuhui   | https://www.ishuhui.com | 1      |
+| YYLS 漫画  | yyls      | http://8comic.se        | 1      |
 
 ## Develop
 
