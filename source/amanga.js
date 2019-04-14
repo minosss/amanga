@@ -36,10 +36,9 @@ module.exports = async (input, flags) => {
     图片链接:
     ${
         typeof images[0] === 'string'
-            ? images.join('\n')
-            : images.map(img => img.url).join('\n')
+            ? images.join('\n    ')
+            : images.map(img => img.url).join('\n    ')
     }
-
                 `;
 
                 ctx.info = info;
