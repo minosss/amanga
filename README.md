@@ -9,6 +9,7 @@
 [![Build Status](https://travis-ci.com/minosss/amanga.svg?branch=master)](https://travis-ci.com/minosss/amanga)
 [![npm](https://img.shields.io/npm/v/amanga.svg?style=flat-square)](https://www.npmjs.com/package/amanga)
 [![code style: prettier](https://img.shields.io/badge/code_style-prettier-ff69b4.svg?style=flat-square)](https://github.com/prettier/prettier)
+[![npm](https://img.shields.io/npm/dt/amanga.svg?style=flat-square)](https://www.npmjs.com/package/amanga)
 
 </div>
 
@@ -92,7 +93,7 @@ module.exports = async (input, flags) => {
 测试
 
 ```bash
-$ node bin/cli.js --type hello foo bar
+$ node source/cli.js --type hello foo bar
 # Title: xxx
 # Images: x
 # ...
