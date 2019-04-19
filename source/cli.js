@@ -19,6 +19,7 @@ const cli = meow(
         --type       source site [required]
         --info       print title and images list
         --output-dir the ouput directory  [default: amanga/<type>/<title>]
+        --ext        file format [default: jpeg]
 
     Examples
         $ amanga --type nhentai 114883
@@ -33,6 +34,10 @@ const cli = meow(
             },
             outputDir: {
                 type: 'string'
+            },
+            ext: {
+                type: 'string',
+                default: 'jpeg'
             }
         }
     }

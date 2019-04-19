@@ -1,9 +1,12 @@
 const download = require('download');
 const Listr = require('listr');
+const sharp = require('sharp');
+const path = require('path');
+const makeDir = require('make-dir');
 const {existsSync} = require('fs');
 
 module.exports = async (input, flags) => {
-    const {type, outputDir} = flags;
+    const {type, outputDir, ext} = flags;
 
     const tasks = new Listr([
         {
@@ -50,41 +53,50 @@ module.exports = async (input, flags) => {
             skip: () => flags.info,
             task: async (ctx, task) => {
                 const {title, images, options} = ctx.data;
+                const maxLength = images.length.toString().length;
 
                 let count = 0;
                 task.title = `下载图片 [${count}/${images.length}]`;
 
-                for (const image of images) {
-                    let url = image;
-                    const imgOptions = {};
-                    if (typeof image !== 'string') {
-                        url = image.url;
-                        if (image.name) {
-                            imgOptions.filename = image.name;
-                        }
-                    }
+                const imagesWithIndex = images.map((url, index) => {
+                    const filename = `${index + 1}`.padStart(maxLength, '0');
+                    return [index, {filename, url}];
+                });
+
+                for (const [index, image] of imagesWithIndex) {
+                    const {url, filename} = image;
 
                     task.output = `下载 ${url}`;
-                    await download(
-                        encodeURI(url),
-                        outputDir || `amanga/${type}/${title}`,
-                        {
-                            // 10s
-                            timeout: 10000,
-                            ...options,
-                            ...imgOptions
-                        }
-                    ).on(
-                        'downloadProgress',
-                        ({transferred, total, percent}) => {
-                            task.output = `下载 ${url} [${transferred}/${total}]`;
-                            if (percent === 1) {
-                                task.title = `下载图片 [${(count += 1)}/${
-                                    images.length
-                                }]`;
+                    await download(encodeURI(url), {
+                        // 10s
+                        timeout: 10000,
+                        ...options
+                    })
+                        .on(
+                            'downloadProgress',
+                            ({transferred, total, percent}) => {
+                                task.output = `下载 ${url} [${transferred}/${total}]`;
+                                if (percent === 1) {
+                                    task.title = `下载图片 [${(count += 1)}/${
+                                        images.length
+                                    }]`;
+                                }
                             }
-                        }
-                    );
+                        )
+                        .then(data => {
+                            const outputFilepath = path.join(
+                                outputDir || `amanga/${type}/${title}`,
+                                `${filename}.${ext}`
+                            );
+
+                            // 确保文件夹存在 -> 用 sharp 输出图片格式
+                            return makeDir(path.dirname(outputFilepath)).then(
+                                () =>
+                                    sharp(data)
+                                        [ext]()
+                                        .toFile(outputFilepath)
+                            );
+                        });
                 }
             }
         });

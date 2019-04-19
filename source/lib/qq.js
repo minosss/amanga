@@ -117,12 +117,7 @@ module.exports = async input => {
         chapter: {cTitle},
         picture
     } = data;
-
-    const images = picture.map((pic, index) => ({
-        // FIXME: 可能需要获取文件类型
-        name: `${index + 1}.jpg`,
-        url: pic.url
-    }));
+    const images = picture.map(({url}) => url);
 
     return {
         title: `${title}/${cTitle}`,

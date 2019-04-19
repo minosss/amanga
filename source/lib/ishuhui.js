@@ -18,9 +18,9 @@ module.exports = async input => {
         contentImg
     } = data.body.data;
     const images = contentImg
-        .map(img => ({url: img.url, name: img.name}))
         // 去掉最后一页广告
-        .filter(({name}) => /^[0-9]/.test(name));
+        .filter(({name}) => /^[0-9]/.test(name))
+        .map(({url}) => url);
 
     return {
         title: `${animeName}/${

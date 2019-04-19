@@ -23,7 +23,8 @@
         "log-symbols": "^2.2.0",
         "lz-string": "^1.4.4",
         "meow": "^5.0.0",
-        "ow": "^0.12.0"
+        "ow": "^0.12.0",
+        "sharp": "^0.22.0"
     },
     "keywords": [
         "cli-app",
