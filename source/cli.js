@@ -3,11 +3,6 @@
 
 const meow = require('meow');
 const logSymbols = require('log-symbols');
-const https = require('https');
-const got = require('got');
-const ow = require('ow');
-const globby = require('globby');
-const download = require('download');
 const amanga = require('./amanga');
 
 const cli = meow(
