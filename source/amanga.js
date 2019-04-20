@@ -5,8 +5,16 @@ const path = require('path');
 const makeDir = require('make-dir');
 const {existsSync} = require('fs');
 
+const supportedImageTypes = ['jpeg', 'png', 'webp', 'tiff'];
+
 module.exports = async (input, flags) => {
     const {type, outputDir, ext} = flags;
+
+    if (!supportedImageTypes.includes(ext)) {
+        throw new TypeError(
+            `不支持 ${ext} 图片格式，仅支持 ${supportedImageTypes.join('|')}`
+        );
+    }
 
     const tasks = new Listr([
         {
