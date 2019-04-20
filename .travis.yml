@@ -3,9 +3,8 @@ node_js:
     - '10'
     - '8'
 
-after_script:
-    - npm install codecov
-    - ./node_modules/.bin/codecov
+install:
+    - yarn
 
 cache:
     yarn: true
