@@ -93,7 +93,8 @@ module.exports = async (input, flags) => {
                         )
                         .then(data => {
                             const outputFilepath = path.join(
-                                outputDir || `amanga/${type}/${title}`,
+                                outputDir || `amanga/${type}`,
+                                `${title}`,
                                 `${filename}.${ext}`
                             );
 
