@@ -11,11 +11,11 @@ const cli = meow(
         $ amanga --type <type> <...input>
 
     参数
-        --type       目标网站 [必须]
-        --info       打印标题和图片信息
-        --output-dir 输出路径 [默认: amanga/<type>/<title>]
-        --ext        图片格式 [默认: jpeg]
-        --focus      强制覆盖图片
+        -t, --type       目标网站 [必须]
+        -i, --info       打印标题和图片信息
+        -o, --output-dir 输出路径 [默认: amanga/<type>/<title>]
+        -f, --focus      强制覆盖图片
+        --ext            图片格式 [默认: jpeg]
 
     例子
         $ amanga --type nhentai 114883
@@ -24,13 +24,16 @@ const cli = meow(
     {
         flags: {
             type: {
-                type: 'string'
+                type: 'string',
+                alias: 't'
             },
             info: {
-                type: 'boolean'
+                type: 'boolean',
+                alias: 'i'
             },
             outputDir: {
-                type: 'string'
+                type: 'string',
+                alias: 'o'
             },
             ext: {
                 type: 'string',
@@ -38,7 +41,8 @@ const cli = meow(
             },
             focus: {
                 type: 'boolean',
-                default: false
+                default: false,
+                alias: 'f'
             }
         }
     }
