@@ -7,8 +7,12 @@ const {existsSync} = require('fs');
 
 const supportedImageTypes = ['jpeg', 'png', 'webp', 'tiff'];
 
+async function delay(ms) {
+    return new Promise(resolve => setTimeout(resolve, ms));
+}
+
 module.exports = async (input, flags) => {
-    const {type, outputDir, ext} = flags;
+    const {type, outputDir, ext, focus} = flags;
 
     if (!supportedImageTypes.includes(ext)) {
         throw new TypeError(
@@ -71,10 +75,28 @@ module.exports = async (input, flags) => {
                     return [index, {filename, url}];
                 });
 
+                const updateTitle = () => {
+                    task.title = `下载图片 [${(count += 1)}/${images.length}]`;
+                };
+
                 for (const [index, image] of imagesWithIndex) {
                     const {url, filename} = image;
 
                     task.output = `下载 ${url}`;
+
+                    const outputFilepath = path.join(
+                        outputDir || `amanga/${type}`,
+                        `${title}`,
+                        `${filename}.${ext}`
+                    );
+
+                    if (!focus && existsSync(outputFilepath)) {
+                        task.output = `图片已存在，跳过 ${url}`;
+                        await delay(150);
+                        updateTitle();
+                        continue;
+                    }
+
                     await download(encodeURI(url), {
                         // 10s
                         timeout: 10000,
@@ -85,19 +107,11 @@ module.exports = async (input, flags) => {
                             ({transferred, total, percent}) => {
                                 task.output = `下载 ${url} [${transferred}/${total}]`;
                                 if (percent === 1) {
-                                    task.title = `下载图片 [${(count += 1)}/${
-                                        images.length
-                                    }]`;
+                                    updateTitle();
                                 }
                             }
                         )
                         .then(data => {
-                            const outputFilepath = path.join(
-                                outputDir || `amanga/${type}`,
-                                `${title}`,
-                                `${filename}.${ext}`
-                            );
-
                             // 确保文件夹存在 -> 用 sharp 输出图片格式
                             return makeDir(path.dirname(outputFilepath)).then(
                                 () =>

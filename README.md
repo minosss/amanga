@@ -34,16 +34,19 @@ $ amanga --help
 
     下载漫画咯
 
-    Usage
+    使用方法
         $ amanga --type <type> <...input>
 
-    Options
-        --type       source site [required]
-        --info       print title and images list
-        --output-dir the ouput directory  [default: amanga/<type>/<title>]
+    参数
+        --type       目标网站 [必须]
+        --info       打印标题和图片信息
+        --output-dir 输出路径 [默认: amanga/<type>/<title>]
+        --ext        图片格式 [默认: jpeg]
+        --focus      强制覆盖图片
 
-    Examples
+    例子
         $ amanga --type nhentai 114883
+        $ amanga --type ishuhui 11429 --info
 ```
 
 ## Todos
