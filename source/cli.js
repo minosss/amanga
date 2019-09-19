@@ -1,6 +1,7 @@
 #!/usr/bin/env node
 'use strict';
 
+require('global-agent/bootstrap');
 const meow = require('meow');
 const logSymbols = require('log-symbols');
 const amanga = require('./amanga');
