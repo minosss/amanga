@@ -52,9 +52,7 @@ $ amanga --help
         $ amanga https://nhentai.net/g/281945/
 ```
 
-代理，比如 manhuagui 的巨人就需要代理才能看的到，而下载也是同样需要代理。amanga 使用 [global-agent](https://www.npmjs.com/package/global-agent) 来实现代理功能
-
-使用环境变量 `GLOBAL_AGENT_HTTP_PROXY` 带上代理地址
+代理，比如 manhuagui 的巨人就需要代理才能看的到，而下载也是同样需要代理。amanga 使用 [global-agent](https://www.npmjs.com/package/global-agent) 来实现代理功能，使用环境变量 `GLOBAL_AGENT_HTTP_PROXY` 带上代理地址
 
 ```
 $ GLOBAL_AGENT_HTTP_PROXY=http://127.0.0.1:8888 amanga https://nhentai.net/g/281945/
