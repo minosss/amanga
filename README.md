@@ -27,42 +27,44 @@ $ yarn global add amanga
 
 ## Usage
 
-**input 是漫画地址链接的数字编号，有些需要漫画编号和集数编号 (比如 qq, manhuagui)**
-
 ```
 $ amanga --help
+    Manga Downloader
 
-    下载漫画咯
+    Usage
+        $ amanga [OPTION]... URL
 
-    使用方法
-        $ amanga --type <type> <...input>
+    optional arguments:
+        --version           Print version and exit
+        --help              Print this help message and exit
 
-    参数
-        -t, --type       目标网站 [必须]
-        -i, --info       打印标题和图片信息
-        -o, --output-dir 输出路径 [默认: amanga/<type>/<title>]
-        -f, --focus      强制覆盖图片
-        --ext            图片格式 [默认: jpeg]
+    Dry-run options:
+        -i, --info          Print extracted information
 
-    例子
-        $ amanga --type nhentai 114883
-        $ amanga --type ishuhui 11429 --info
+    Download options:
+        -o DIR, --output-dir DIR
+                            Set output directory
+        -f, --focus         Force overwriting existing files
+        --ext EXT
+                            Image format [default: jpeg]
+
+    Example:
+        $ amanga https://nhentai.net/g/281945/
 ```
 
 ## Todos
 
--   [ ] 支持需要点击事件
--   [ ] 输出信息更友好
+-   [ ] 支持批量下载
 
 ## Supported Sites
 
-| Name       | Type      | Home                    | Inputs |
-| ---------- | --------- | ----------------------- | ------ |
-| 看漫画     | manhuagui | https://manhuagui.com   | 2      |
-| nhentai    | nhentai   | https://nhentai.net     | 1      |
-| 鼠绘漫画网 | ishuhui   | https://www.ishuhui.com | 1      |
-| YYLS 漫画  | yyls      | http://8comic.se        | 1      |
-| 腾讯动漫   | qq        | https://ac.qq.com       | 2      |
+| Name       | Home                    | Example                                              |
+| ---------- | ----------------------- | ---------------------------------------------------- |
+| 看漫画     | https://manhuagui.com   | https://www.manhuagui.com/comic/4740/                |
+| nhentai    | https://nhentai.net     | https://nhentai.net/g/281945/                        |
+| 鼠绘漫画网 | https://www.ishuhui.com | https://www.ishuhui.com/comics/detail/11746/         |
+| YYLS 漫画  | http://8comic.se        | http://8comic.se/65178/                              |
+| 腾讯动漫   | https://ac.qq.com       | https://ac.qq.com/ComicView/index/id/505430/cid/972/ |
 
 ## Develop
 
@@ -82,23 +84,26 @@ $ yarn install
 
 ```js
 // lib/hello.js
-// input 按顺序传入的值 字符串数组
-// flags 传入所支持的参数 比如 type, info
-module.exports = async (input, flags) => {
-    return {
-        title: '标题',
-        images: [], // 所有图片的链接，全部会通过 download 库下载
-        options: {} // download 和 got 的配置
-    };
+const {getContent, downloadUrls} = require('../util');
+// 处理下载
+exports.download = async (url, flags) => {
+	const html = getContent(url);
+	// 处理解析...balabala
+	// 丢到下载
+	await downloadUrls({images, title, flags, site: 'hello'});
+	// images 图片的地址数组 [url, url, url]
+	// title 标题，会当作目录
+	// site 输出时使用
+	// flags 命令行参数
 };
+// 处理多话下载
+exports.downloadList = async (url, flags) => {};
 ```
 
 测试
 
 ```bash
-$ node source/cli.js --type hello foo bar
-# Title: xxx
-# Images: x
+$ node source/cli.js URL
 # ...
 ```
 
