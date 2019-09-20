@@ -1,28 +1,24 @@
-const got = require('got');
-const ow = require('ow');
 const cheerio = require('cheerio');
+const {getContent, listNotSupported, downloadUrls} = require('../util');
 
-module.exports = async input => {
-    ow(input, ow.array.minLength(1));
-    const [id] = input;
-    // ow
-    const response = await got(`https://nhentai.net/g/${id}/`);
-    const $ = cheerio.load(response.body);
+async function download(url, flags) {
+	const html = await getContent(url);
+	const $ = cheerio.load(html);
 
-    const title = $('#info > h1').text();
-    const images = $('#thumbnail-container img.lazyload')
-        .map((_, ele) =>
-            $(ele)
-                .data('src')
-                // 1t.jpg 是缩略图
-                .replace(/([0-9]{1,})t/g, '$1')
-                // 图片路径 https://i.nhentai.net/galleries/...
-                .replace(/\/\/t/g, '//i')
-        )
-        .toArray();
+	const title = $('#info > h1').text();
+	const images = $('#thumbnail-container img.lazyload')
+		.map((_, ele) =>
+			$(ele)
+				.data('src')
+				// 1t.jpg 是缩略图
+				.replace(/([0-9]{1,})t/g, '$1')
+				// 图片路径 https://i.nhentai.net/galleries/...
+				.replace(/\/\/t/g, '//i')
+		)
+		.toArray();
 
-    return {
-        title,
-        images
-    };
-};
+	await downloadUrls({images, title, flags, site: 'nhentai'});
+}
+
+exports.download = download;
+exports.downloadList = listNotSupported('nhentai');

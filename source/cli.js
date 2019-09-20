@@ -7,59 +7,68 @@ const logSymbols = require('log-symbols');
 const amanga = require('./amanga');
 
 const cli = meow(
-    `
-    使用方法
-        $ amanga --type <type> <...input>
+	`
+    Usage
+        $ amanga [OPTION]... URL
 
-    参数
-        -t, --type       目标网站 [必须]
-        -i, --info       打印标题和图片信息
-        -o, --output-dir 输出路径 [默认: amanga/<type>/<title>]
-        -f, --focus      强制覆盖图片
-        --ext            图片格式 [默认: jpeg]
+    optional arguments:
+        --version           Print version and exit
+        --help              Print this help message and exit
 
-    例子
-        $ amanga --type nhentai 114883
-        $ amanga --type ishuhui 11429 --info
+    Dry-run options:
+        -i, --info          Print extracted information
+
+    Download options:
+        -o DIR, --output-dir DIR
+                            Set output directory
+        -f, --focus         Force overwriting existing files
+        --ext EXT
+                            Image format [default: jpeg]
+
+    Example:
+        $ amanga https://nhentai.net/g/281945/
 `,
-    {
-        flags: {
-            type: {
-                type: 'string',
-                alias: 't'
-            },
-            info: {
-                type: 'boolean',
-                alias: 'i'
-            },
-            outputDir: {
-                type: 'string',
-                alias: 'o'
-            },
-            ext: {
-                type: 'string',
-                default: 'jpeg'
-            },
-            focus: {
-                type: 'boolean',
-                default: false,
-                alias: 'f'
-            }
-        }
-    }
+	{
+		flags: {
+			list: {
+				type: 'boolean',
+				alias: 'l',
+			},
+			info: {
+				type: 'boolean',
+				alias: 'i',
+			},
+			outputDir: {
+				type: 'string',
+				alias: 'o',
+				default: 'amanga',
+			},
+			ext: {
+				type: 'string',
+				default: 'jpeg',
+			},
+			focus: {
+				type: 'boolean',
+				default: false,
+				alias: 'f',
+			},
+		},
+	}
 );
 
-if (cli.input < 1 || !cli.flags.type) {
-    console.log(cli.help);
-    process.exit(0);
+if (cli.input.length !== 1) {
+	console.log(cli.help);
+	process.exit(0);
 }
 
 // cli -> lib(parser) -> download -> done
 (async () => {
-    await amanga(cli.input, cli.flags);
+	await amanga(cli.input[0], cli.flags);
 
-    console.log(`\n${logSymbols.success} All Done 🎉`);
+	console.log();
+	console.log('All Done 🎉');
 })().catch(error => {
-    console.error(`\n${logSymbols.error} ${error.message}`);
-    process.exit(1);
+	console.log();
+	console.log(error.message);
+	process.exit(1);
 });

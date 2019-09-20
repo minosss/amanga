@@ -1,58 +1,56 @@
 {
-    "name": "amanga",
-    "version": "0.5.3",
-    "description": "下载漫画咯",
-    "author": "mino <minoscc+dev@gmail.com>",
-    "repository": "minosss/amanga",
-    "main": "source/amanga.js",
-    "license": "MIT",
-    "scripts": {
-        "test": "prettier-check source/**/*.js"
-    },
-    "bin": {
-        "amanga": "source/cli.js"
-    },
-    "files": [
-        "source"
-    ],
-    "dependencies": {
-        "cheerio": "^1.0.0-rc.3",
-        "download": "^7.1.0",
-        "global-agent": "^2.1.1",
-        "got": "^9.6.0",
-        "listr": "^0.14.3",
-        "log-symbols": "^2.2.0",
-        "lz-string": "^1.4.4",
-        "meow": "^5.0.0",
-        "ow": "^0.12.0",
-        "sharp": "^0.22.0"
-    },
-    "keywords": [
-        "cli-app",
-        "cli",
-        "downloader"
-    ],
-    "devDependencies": {
-        "husky": "^1.3.1",
-        "lint-staged": "^8.1.5",
-        "prettier": "^1.16.4",
-        "prettier-check": "^2.0.0"
-    },
-    "husky": {
-        "hooks": {
-            "pre-commit": "lint-staged"
-        }
-    },
-    "lint-staged": {
-        "*.{js,json,md}": [
-            "prettier --write",
-            "git add"
-        ]
-    },
-    "engines": {
-        "node": ">=8"
-    },
-    "publishConfig": {
-        "access": "public"
-    }
+	"name": "amanga",
+	"version": "0.5.3",
+	"description": "Manga Downloader",
+	"author": "mino <minoscc+dev@gmail.com>",
+	"repository": "minosss/amanga",
+	"main": "source/amanga.js",
+	"license": "MIT",
+	"scripts": {
+		"test": "prettier-check source/**/*.js"
+	},
+	"bin": {
+		"amanga": "source/cli.js"
+	},
+	"files": [
+		"source"
+	],
+	"dependencies": {
+		"cheerio": "^1.0.0-rc.3",
+		"download": "^7.1.0",
+		"global-agent": "^2.1.1",
+		"got": "^9.6.0",
+		"lz-string": "^1.4.4",
+		"meow": "^5.0.0",
+		"ora": "^3.4.0",
+		"sharp": "^0.22.0"
+	},
+	"keywords": [
+		"cli-app",
+		"cli",
+		"downloader"
+	],
+	"devDependencies": {
+		"husky": "^1.3.1",
+		"lint-staged": "^8.1.5",
+		"prettier": "^1.16.4",
+		"prettier-check": "^2.0.0"
+	},
+	"husky": {
+		"hooks": {
+			"pre-commit": "lint-staged"
+		}
+	},
+	"lint-staged": {
+		"*.{js,json,md}": [
+			"prettier --write",
+			"git add"
+		]
+	},
+	"engines": {
+		"node": ">=8"
+	},
+	"publishConfig": {
+		"access": "public"
+	}
 }

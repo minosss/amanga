@@ -1,33 +1,22 @@
-const got = require('got');
-const ow = require('ow');
+const {getContent, listNotSupported, downloadUrls} = require('../util');
 
-module.exports = async input => {
-    ow(input, ow.array.minLength(1));
-    const [id] = input;
+async function download(url, flags) {
+	const match = /\/detail\/(\d+)/g.exec(url);
+	if (!match) {
+		throw new Error('Invalid site URL ' + url);
+	}
+	const id = match[1];
+	const json = await getContent(`https://prod-api.ishuhui.com/comics/detail?id=${id}`, {
+		json: true,
+	});
+	const {animeName, title, numberStart, numberEnd, contentImg} = json.data;
+	const images = contentImg
+		// 去掉最后一页广告
+		.filter(({name}) => /^[0-9]/.test(name))
+		.map(({url}) => url);
 
-    const data = await got(
-        `https://prod-api.ishuhui.com/comics/detail?id=${id}`,
-        {json: true}
-    );
+	await downloadUrls({images, title, flags, site: 'ishuhui'});
+}
 
-    const {
-        animeName,
-        title,
-        numberStart,
-        numberEnd,
-        contentImg
-    } = data.body.data;
-    const images = contentImg
-        // 去掉最后一页广告
-        .filter(({name}) => /^[0-9]/.test(name))
-        .map(({url}) => url);
-
-    return {
-        title: `${animeName}/${
-            numberStart === numberEnd
-                ? numberStart
-                : numberStart + '-' + numberEnd
-        } ${title}`,
-        images
-    };
-};
+exports.download = download;
+exports.downloadList = listNotSupported('ishuhui');
