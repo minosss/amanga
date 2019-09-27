@@ -1,5 +1,7 @@
 const cheerio = require('cheerio');
-const {getContent, downloadUrls} = require('../util');
+const {getContent, downloadUrls, listNotSupported} = require('../util');
+
+const SITE = 'lhscan';
 
 async function download(url, flags) {
 	const html = await getContent(url);
@@ -21,7 +23,8 @@ async function download(url, flags) {
 		.filter((_, url) => url.indexOf('Credit_LHScan') === -1)
 		.toArray();
 
-	await downloadUrls({images, title, flags, site: 'lhscan'});
+	await downloadUrls({images, title, flags, site: SITE});
 }
 
 exports.download = download;
+exports.downloadList = listNotSupported(SITE);
