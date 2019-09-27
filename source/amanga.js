@@ -5,6 +5,7 @@ const supportedSites = {
 	qq: 'qq',
 	nhentai: 'nhentai',
 	yyls: 'yyls',
+	lhscan: 'lhscan',
 };
 
 const match1 = (text, regex) => {

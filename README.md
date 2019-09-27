@@ -64,13 +64,14 @@ $ GLOBAL_AGENT_HTTP_PROXY=http://127.0.0.1:8888 amanga https://nhentai.net/g/281
 
 ## Supported Sites
 
-| Name       | Home                    | Example                                                       |
-| ---------- | ----------------------- | ------------------------------------------------------------- |
-| 看漫画     | https://manhuagui.com   | `amanga https://www.manhuagui.com/comic/4740/`                |
-| nhentai    | https://nhentai.net     | `amanga https://nhentai.net/g/281945/`                        |
-| 鼠绘漫画网 | https://www.ishuhui.com | `amanga https://www.ishuhui.com/comics/detail/11746/`         |
-| YYLS 漫画  | http://8comic.se        | `amanga http://8comic.se/65178/`                              |
-| 腾讯动漫   | https://ac.qq.com       | `amanga https://ac.qq.com/ComicView/index/id/505430/cid/972/` |
+| Name       | Home                    | Example                                                                      |
+| ---------- | ----------------------- | ---------------------------------------------------------------------------- |
+| 看漫画     | https://manhuagui.com   | `amanga https://www.manhuagui.com/comic/4740/`                               |
+| nhentai    | https://nhentai.net     | `amanga https://nhentai.net/g/281945/`                                       |
+| 鼠绘漫画网 | https://www.ishuhui.com | `amanga https://www.ishuhui.com/comics/detail/11746/`                        |
+| YYLS 漫画  | http://8comic.se        | `amanga http://8comic.se/65178/`                                             |
+| 腾讯动漫   | https://ac.qq.com       | `amanga https://ac.qq.com/ComicView/index/id/505430/cid/972/`                |
+| LHScan     | https://lhscan.net      | `amanga https://lhscan.net/read-mairimashita-iruma-kun-raw-chapter-125.html` |
 
 ## Develop
 
