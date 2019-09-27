@@ -15,7 +15,14 @@ async function download(url, flags) {
 		.filter(({name}) => /^[0-9]/.test(name))
 		.map(({url}) => url);
 
-	await downloadUrls({images, title, flags, site: 'ishuhui'});
+	await downloadUrls({
+		images,
+		title: `${animeName}/${
+			numberStart === numberEnd ? numberStart : numberStart + '-' + numberEnd
+		} ${title}`,
+		flags,
+		site: 'ishuhui',
+	});
 }
 
 exports.download = download;
