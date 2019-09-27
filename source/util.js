@@ -55,19 +55,23 @@ exports.downloadUrls = async ({images, title, flags, site, downloadOptions = {}}
 
 		// start downloading
 		spinner.start(`Downloading ${url}`);
-		await download(url, {timeout: 10 * 1000, ...downloadOptions})
-			.on('downloadProgress', ({transferred, total, percent}) => {
-				if (percent === 1) {
-					spinner.succeed(`Saved ${filePath}`);
-				}
-			})
-			.then(data => {
-				return makeDir(path.dirname(filePath)).then(() =>
-					sharp(data)
-						['jpeg']()
-						.toFile(filePath)
-				);
-			});
+		try {
+			await download(url, {timeout: 10 * 1000, ...downloadOptions})
+				.on('downloadProgress', ({transferred, total, percent}) => {
+					if (percent === 1) {
+						spinner.succeed(`Saved ${filePath}`);
+					}
+				})
+				.then(data => {
+					return makeDir(path.dirname(filePath)).then(() =>
+						sharp(data)
+							[ext]()
+							.toFile(filePath)
+					);
+				});
+		} catch (error) {
+			spinner.fail(error.message);
+		}
 	}
 
 	spinner.prefixText = '';
