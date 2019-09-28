@@ -79,6 +79,7 @@ $ GLOBAL_AGENT_HTTP_PROXY=http://127.0.0.1:8888 amanga https://nhentai.net/g/281
 
 ```bash
 $ git clone https://github.com/minosss/amanga.git
+$ cd amanga
 ```
 
 安装依赖
