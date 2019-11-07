@@ -22,6 +22,7 @@ exports.printInfo = (siteInfo, title, images) => {
 	console.log('Site:    ' + siteInfo);
 	console.log('Title:   ' + title);
 	console.log('Images:  ' + images.length);
+	console.log(images.join('\n'));
 };
 
 exports.downloadUrls = async ({images, title, flags, site, downloadOptions = {}}) => {
