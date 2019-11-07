@@ -1,7 +1,10 @@
+const path = require('path');
 const cheerio = require('cheerio');
 const CryptoJS = require('crypto-js');
 const esprima = require('esprima');
 const {getContent, listNotSupported, downloadUrls} = require('../util');
+
+const RES_HOST = 'https://mhcdn.manhuazj.com';
 
 async function download(url, flags) {
 	const html = await getContent(url);
@@ -15,11 +18,13 @@ async function download(url, flags) {
 	const scripts = $('script').toArray();
 	const title = `${mangaName}/${chapterName}`;
 
+	let imagePath = '';
 	let images = [];
 	for (const ele of scripts) {
 		const text = $(ele).html();
 		if (text.indexOf('chapterImages') !== -1) {
 			const st = esprima.parseScript(text, {});
+			imagePath = st.body[2].declarations[0].init.value;
 			const raw = st.body[1].declarations[0].init.value;
 			const key = CryptoJS.enc.Utf8.parse('123456781234567G');
 			const iv = CryptoJS.enc.Utf8.parse('ABCDEF1G34123412');
@@ -32,7 +37,7 @@ async function download(url, flags) {
 			break;
 		}
 	}
-	images = images.map(url => decodeURI(url));
+	images = images.map(url => decodeURI(path.join(RES_HOST, imagePath, url)));
 
 	await downloadUrls({
 		images,
