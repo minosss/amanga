@@ -1,7 +1,7 @@
 import path = require('path');
 import cheerio = require('cheerio');
 import * as CryptoJS from 'crypto-js';
-import {parseScript, Program} from 'esprima';
+import {parseScript} from 'esprima';
 import {getContent, downloadUrls} from '../util';
 import {MangaOptions} from '../types';
 
@@ -24,9 +24,10 @@ export async function download(url: string, flags: MangaOptions) {
 	for (const ele of scripts) {
 		const text = $(ele).html();
 		if (text?.indexOf('chapterImages') !== -1) {
-			const st: Program = parseScript(text ?? '', {});
-			imagePath = st.body[2].declarations[0].init.value;
-			const raw = st.body[1].declarations[0].init.value;
+			const st = parseScript(text ?? '', {});
+			// VariableDeclaration
+			imagePath = (st.body[2] as any).declarations[0].init.value;
+			const raw = (st.body[1] as any).declarations[0].init.value;
 			const key = CryptoJS.enc.Utf8.parse('123456781234567G');
 			const iv = CryptoJS.enc.Utf8.parse('ABCDEF1G34123412');
 			const decrypt = CryptoJS.AES.decrypt(raw, key, {
