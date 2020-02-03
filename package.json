@@ -12,7 +12,7 @@
 		"prepare": "npm run build"
 	},
 	"bin": {
-		"amanga": "source/cli.js"
+		"amanga": "dist/source/cli.js"
 	},
 	"files": [
 		"dist/source"
