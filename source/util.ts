@@ -1,23 +1,25 @@
-const path = require('path');
-const got = require('got');
-const download = require('download');
-const makeDir = require('make-dir');
-const sharp = require('sharp');
-const ora = require('ora');
-const {existsSync} = require('fs');
+import path = require('path');
+import ora = require('ora');
+import download = require('download');
+import makeDir = require('make-dir');
+import sharp = require('sharp');
+import {existsSync} from 'fs';
+import got from 'got';
 
-const delay = ms => new Promise(resolve => setTimeout(resolve, ms));
+import {DownloadOptions} from './types';
 
-exports.getContent = async (url, options = {}) => {
-	const res = await got(url, {...options, timeout: 5000});
+// const delay = (ms: number) => new Promise(resolve => setTimeout(resolve, ms));
+
+export async function getContent(url: string, options = {}) {
+	const res = await got(url, {timeout: 5000, ...options});
 	return res.body;
-};
+}
 
-exports.listNotSupported = site => url => {
+export const listNotSupported = (site: string) => (url: string) => {
 	console.log(`(${site}) list not supported ${url}`);
 };
 
-exports.printInfo = (siteInfo, title, images) => {
+export const printInfo = (siteInfo: string, title: string, images: string[]) => {
 	console.log();
 	console.log('Site:    ' + siteInfo);
 	console.log('Title:   ' + title);
@@ -25,10 +27,16 @@ exports.printInfo = (siteInfo, title, images) => {
 	console.log(images.join('\n'));
 };
 
-exports.downloadUrls = async ({images, title, flags, site, downloadOptions = {}}) => {
+export const downloadUrls = async ({
+	images,
+	title,
+	flags,
+	site,
+	downloadOptions,
+}: DownloadOptions) => {
 	const {outputDir, focus, ext, info} = flags;
 
-	exports.printInfo(site, title, images);
+	printInfo(site, title, images);
 	if (info) {
 		return;
 	}
@@ -37,13 +45,13 @@ exports.downloadUrls = async ({images, title, flags, site, downloadOptions = {}}
 	spinner.info(`Download start`);
 
 	const length = images.length;
-	const finalImages = images.map((url, index) => {
+	const finalImages = images.map((url: string, index) => {
 		const filename = `${index + 1}`.padStart(length.toString().length, '0');
 		return {index, filename, url: encodeURI(url)};
 	});
 
 	for (const image of finalImages) {
-		const {url, filename, index} = image;
+		const {url, filename} = image;
 		const filePath = path.join(outputDir || 'amanga', title, `${filename}.${ext}`);
 
 		spinner.prefixText = `[${filename}/${length}]`;
@@ -57,17 +65,15 @@ exports.downloadUrls = async ({images, title, flags, site, downloadOptions = {}}
 		// start downloading
 		spinner.start(`Downloading ${url}`);
 		try {
-			await download(url, {timeout: 10 * 1000, ...downloadOptions})
-				.on('downloadProgress', ({transferred, total, percent}) => {
+			await download(url, undefined, {...downloadOptions})
+				.on('downloadProgress', ({percent}) => {
 					if (percent === 1) {
 						spinner.succeed(`Saved ${filePath}`);
 					}
 				})
 				.then(data => {
 					return makeDir(path.dirname(filePath)).then(() =>
-						sharp(data)
-							[ext]()
-							.toFile(filePath)
+						(sharp(data) as any)[ext]().toFile(filePath)
 					);
 				});
 		} catch (error) {

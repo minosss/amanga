@@ -1,8 +1,9 @@
-const cheerio = require('cheerio');
-const {getContent, listNotSupported, downloadUrls} = require('../util');
+import cheerio = require('cheerio');
+import {MangaOptions} from '../types';
+import {getContent, downloadUrls} from '../util';
 
-async function download(url, flags) {
-	const html = getContent(url);
+export async function download(url: string, flags: MangaOptions) {
+	const html = await getContent(url);
 	const $ = cheerio.load(html);
 
 	// 默认标题是 漫画名 - 第几话 => 漫画名/第几话
@@ -10,15 +11,15 @@ async function download(url, flags) {
 		.text()
 		.replace(/\s/g, '')
 		.replace('–', '/');
-	let length = $('#pull > option')
+	let length: string | number = $('#pull > option')
 		.last()
 		.text();
 	// 选页option拿最后一页
-	length = parseInt(length.match(/[0-9]{1,}/g));
+	length = parseInt(length.match(/[0-9]{1,}/g)?.shift() ?? '0');
 
 	// 图片规则是 http://pic.8comic.se/wp-content/uploads/.../{000}.jpg 可能会有 png 或其它类型吧
-	const firstImgUrl = $('#caonima').attr('src');
-	const [_, imgUrl, __, ext] = /(.*\/)([0-9]{1,}\.(jpg|jpeg|png))/g.exec(firstImgUrl);
+	const firstImgUrl = $('#caonima').attr('src') ?? '';
+	const [, imgUrl, , ext] = /(.*\/)([0-9]{1,}\.(jpg|jpeg|png))/g.exec(firstImgUrl) ?? [];
 
 	const images = [];
 	for (let index = 1; index <= length; index++) {
@@ -27,6 +28,3 @@ async function download(url, flags) {
 
 	await downloadUrls({images, title, flags, site: 'yyls'});
 }
-
-exports.download = download;
-exports.downloadList = listNotSupported('yyls');

@@ -1,11 +1,12 @@
-const cheerio = require('cheerio');
-const {decompressFromBase64} = require('lz-string');
-const {getContent, listNotSupported, downloadUrls} = require('../util');
+import cheerio = require('cheerio');
+import {decompressFromBase64} from 'lz-string';
+import {MangaOptions} from '../types';
+import {getContent, downloadUrls} from '../util';
 
-function decode(p, a, c, k, e, d) {
-	e = function(c) {
+function decode(p: any, a: any, c: any, k: any, e: any, d: any) {
+	e = function(c: any) {
 		return (
-			(c < a ? '' : e(parseInt(c / a))) +
+			(c < a ? '' : e(Math.floor(c / a))) +
 			((c = c % a) > 35 ? String.fromCharCode(c + 29) : c.toString(36))
 		);
 	};
@@ -13,7 +14,7 @@ function decode(p, a, c, k, e, d) {
 	if (true) {
 		while (c--) d[e(c)] = k[c] || e(c);
 		k = [
-			function(e) {
+			function(e: any) {
 				return d[e];
 			},
 		];
@@ -28,17 +29,13 @@ function decode(p, a, c, k, e, d) {
 	return p;
 }
 
-async function download(url, flags) {
+export async function download(url: string, flags: MangaOptions) {
 	const html = await getContent(url);
 	const $ = cheerio.load(html);
 	const rawData = $('body').html();
-	const [
-		_,
-		propMap,
-		from,
-		to,
-		base64data,
-	] = /\}\(\'(.*)\'\,([0-9]{1,})\,([0-9]{1,})\,\'(.*)\'\[\'\\x73\\x70/g.exec(rawData);
+	const [_, propMap, from, to, base64data] =
+		/\}\(\'(.*)\'\,([0-9]{1,})\,([0-9]{1,})\,\'(.*)\'\[\'\\x73\\x70/g.exec(rawData ?? '') ??
+		[];
 
 	let data = decode(propMap, from, to, decompressFromBase64(base64data).split('|'), 0, {});
 
@@ -70,6 +67,3 @@ async function download(url, flags) {
 
 	await downloadUrls({images, title, flags, site: 'manhuagui', downloadOptions: options});
 }
-
-exports.download = download;
-exports.downloadList = listNotSupported('manhuagui');

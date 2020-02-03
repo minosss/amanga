@@ -1,12 +1,13 @@
-const path = require('path');
-const cheerio = require('cheerio');
-const CryptoJS = require('crypto-js');
-const esprima = require('esprima');
-const {getContent, listNotSupported, downloadUrls} = require('../util');
+import path = require('path');
+import cheerio = require('cheerio');
+import * as CryptoJS from 'crypto-js';
+import {parseScript, Program} from 'esprima';
+import {getContent, downloadUrls} from '../util';
+import {MangaOptions} from '../types';
 
 const RES_HOST = 'https://mhcdn.manhuazj.com';
 
-async function download(url, flags) {
+export async function download(url: string, flags: MangaOptions) {
 	const html = await getContent(url);
 	const $ = cheerio.load(html);
 	const mangaName = $('.head_title a')
@@ -22,8 +23,8 @@ async function download(url, flags) {
 	let images = [];
 	for (const ele of scripts) {
 		const text = $(ele).html();
-		if (text.indexOf('chapterImages') !== -1) {
-			const st = esprima.parseScript(text, {});
+		if (text?.indexOf('chapterImages') !== -1) {
+			const st: Program = parseScript(text ?? '', {});
 			imagePath = st.body[2].declarations[0].init.value;
 			const raw = st.body[1].declarations[0].init.value;
 			const key = CryptoJS.enc.Utf8.parse('123456781234567G');
@@ -37,7 +38,7 @@ async function download(url, flags) {
 			break;
 		}
 	}
-	images = images.map(url => decodeURI(path.join(RES_HOST, imagePath, url)));
+	images = images.map((imgUrl: string) => decodeURI(path.join(RES_HOST, imagePath, imgUrl)));
 
 	await downloadUrls({
 		images,
@@ -46,6 +47,3 @@ async function download(url, flags) {
 		site: 'manhuadui',
 	});
 }
-
-exports.download = download;
-exports.downloadList = listNotSupported('manhuadui');
