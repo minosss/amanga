@@ -1,4 +1,5 @@
 dist
+coverage
 amanga
 node_modules
 yarn.lock
