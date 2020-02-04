@@ -1,14 +1,15 @@
 import download = require('download');
 
 export interface MangaOptions {
+	[key: string]: any;
 	info?: boolean;
 	outputDir?: string;
 	focus?: boolean;
-	ext?: string;
+	ext: string;
 }
 
 export interface MangaModule {
-	download: (url: string, args: {[key: string]: any}) => void;
+	download: (url: string, flags: MangaOptions) => void;
 	downloadList: () => void;
 }
 
@@ -20,6 +21,6 @@ export interface DownloadOptions {
 	images: string[];
 	title: string;
 	site: string;
-	flags: {[key: string]: any};
+	flags: MangaOptions;
 	downloadOptions?: download.DownloadOptions;
 }

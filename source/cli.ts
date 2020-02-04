@@ -6,6 +6,7 @@ import cli = require('commander');
 import chalk = require('chalk');
 import {version} from '../package.json';
 import amanga from './amanga';
+import {MangaOptions} from './types.js';
 
 cli.version(`@yme/amanga ${version}`).usage('<command> [options]');
 
@@ -38,7 +39,7 @@ function camelize(str: string) {
 	return str.replace(/-(\w)/g, (_, c) => (c ? c.toUpperCase() : ''));
 }
 
-function cleanArgs(cmd: cli.Command) {
+function cleanArgs(cmd: cli.Command): MangaOptions {
 	const args: {[key: string]: any} = {};
 	cmd.options.forEach((o: cli.Option) => {
 		const key = camelize(o.long.replace(/^--/, ''));
@@ -46,5 +47,5 @@ function cleanArgs(cmd: cli.Command) {
 			args[key] = cmd[key];
 		}
 	});
-	return args;
+	return args as MangaOptions;
 }
