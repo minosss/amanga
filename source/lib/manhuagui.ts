@@ -33,7 +33,7 @@ export async function download(url: string, flags: MangaOptions) {
 	const html = await getContent(url);
 	const $ = cheerio.load(html);
 	const rawData = $('body').html();
-	const [_, propMap, from, to, base64data] =
+	const [, propMap, from, to, base64data] =
 		/\}\(\'(.*)\'\,([0-9]{1,})\,([0-9]{1,})\,\'(.*)\'\[\'\\x73\\x70/g.exec(rawData ?? '') ??
 		[];
 
