@@ -6,6 +6,7 @@ export interface MangaOptions {
 	outputDir?: string;
 	focus?: boolean;
 	ext: string;
+	retry: number;
 }
 
 export interface MangaModule {
@@ -17,8 +18,12 @@ export interface SupportedSitesMap {
 	[key: string]: string;
 }
 
+export type Image = {url: string; index: number; filename: string};
+export type ImageList = Image[];
+export type UrlList = string[];
+
 export interface DownloadOptions {
-	images: string[];
+	images: UrlList | ImageList;
 	title: string;
 	site: string;
 	flags: MangaOptions;
