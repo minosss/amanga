@@ -41,7 +41,7 @@ export default async function amanga(url: string, flags: MangaOptions) {
 
 	try {
 		const mm = await getMangaModule(url);
-		mm.download(url, flags);
+		await mm.download(url, flags);
 	} catch (error) {
 		console.log('Error: ' + chalk.red(error.message));
 		console.log();

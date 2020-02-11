@@ -10,7 +10,7 @@ export interface MangaOptions {
 }
 
 export interface MangaModule {
-	download: (url: string, flags: MangaOptions) => void;
+	download: (url: string, flags: MangaOptions) => Promise<void>;
 	downloadList: () => void;
 }
 
