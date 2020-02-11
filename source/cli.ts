@@ -17,7 +17,7 @@ cli.command('get <url>')
 	.option('-o, --output-dir <dir>', 'Set output directory')
 	.option('-f, --focus', 'Force overwriting existing files')
 	.option('--ext <ext>', 'Image format', 'jpeg')
-	.option('-r, --retry', 'Retry times', 3)
+	.option('-r, --retry <tiems>', 'Retry times', 3)
 	.action((url, cmd) => {
 		amanga(url, cleanArgs(cmd));
 	});
