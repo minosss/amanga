@@ -2,6 +2,8 @@ import cheerio = require('cheerio');
 import {decompressFromBase64} from 'lz-string';
 import {MangaOptions} from '../types';
 import {getContent, downloadUrls} from '../util';
+import {parseScript} from 'esprima';
+import {ExpressionStatement, CallExpression, MemberExpression, Literal} from 'estree';
 
 function decode(p: any, a: any, c: any, k: any, e: any, d: any) {
 	e = function(c: any) {
@@ -29,20 +31,50 @@ function decode(p: any, a: any, c: any, k: any, e: any, d: any) {
 	return p;
 }
 
+function parseData(statement: ExpressionStatement) {
+	const data: (string | string[])[] = [];
+
+	((statement.expression as CallExpression)?.arguments[0] as CallExpression).arguments.forEach(
+		arg => {
+			if (arg.type === 'Literal') {
+				data.push(arg.value?.toString() ?? '');
+			} else if (arg.type === 'CallExpression') {
+				// 加密的图片数据
+				const b64Data =
+					((arg.callee as MemberExpression)?.object as Literal)?.value?.toString() ??
+					'';
+				data.push(decompressFromBase64(b64Data).split('|'));
+			} else if (arg.type === 'ObjectExpression') {
+				// data.push({})
+			}
+		}
+	);
+
+	const [p, a, c, k, e] = data;
+	const decodeData = decode(p, a, c, k, e, {}) + '';
+	const [jsonData] = decodeData.match(/\{(.+)\}/g) || [];
+
+	return jsonData ? JSON.parse(jsonData) : null;
+}
+
 export async function download(url: string, flags: MangaOptions) {
 	const html = await getContent(url);
 	const $ = cheerio.load(html);
-	const rawData = $('body').html();
-	const [, propMap, from, to, base64data] =
-		/\}\(\'(.*)\'\,([0-9]{1,})\,([0-9]{1,})\,\'(.*)\'\[\'\\x73\\x70/g.exec(rawData ?? '') ??
-		[];
 
-	let data = decode(propMap, from, to, decompressFromBase64(base64data).split('|'), 0, {});
+	let data;
+	const scripts = $('script').toArray();
+	for (const ele of scripts) {
+		const text = $(ele).html();
+		if (text?.indexOf('window[') !== -1) {
+			const st = parseScript(text || '', {});
+			const statement = st.body[0];
+			data = parseData(statement as ExpressionStatement);
+		}
+	}
 
-	// 解密完后去掉头和尾
-	data = data.replace('SMH.imgData(', '');
-	data = data.replace(').preInit();', '');
-	data = JSON.parse(`${data}`);
+	if (!data) {
+		throw new Error('Invalid data');
+	}
 
 	// 把漫画名也加进去 漫画名/第几话
 	const title = `${data.bname}/${data.cname}`;
