@@ -114,3 +114,21 @@ export const downloadUrls = async ({
 	spinner.prefixText = '';
 	spinner.succeed('Download complete!');
 };
+
+export function toBoolean(val: unknown): boolean {
+	if (typeof val === 'string') {
+		return val.toLocaleLowerCase() === 'true' || val === '1' || val === 'enable';
+	} else if (typeof val === 'boolean') {
+		return val;
+	}
+	return !!val;
+}
+
+export function toNumber(val: unknown): number {
+	if (typeof val === 'string') {
+		return parseInt(val, 10);
+	} else if (typeof val === 'number') {
+		return Math.floor(val);
+	}
+	return 0;
+}
