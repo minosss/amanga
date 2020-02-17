@@ -3,7 +3,7 @@ import ora = require('ora');
 import download = require('download');
 import makeDir = require('make-dir');
 import sharp = require('sharp');
-import {existsSync} from 'fs';
+import {existsSync, remove} from 'fs-extra';
 import got from 'got';
 
 import {DownloadOptions, ImageList, Image, UrlList} from './types';
@@ -72,21 +72,17 @@ export const downloadUrls = async ({
 		// start downloading
 		spinner.start(`Downloading ${url}`);
 		try {
-			await download(url, undefined, {...downloadOptions})
-				.on('downloadProgress', ({percent}) => {
-					if (percent === 1) {
-						spinner.succeed(`Saved ${filePath}`);
-					}
-				})
-				.then(async data => {
-					await makeDir(path.dirname(filePath));
-					try {
-						await (sharp(data) as any)[ext]().toFile(filePath);
-					} catch (error) {
-						failImages.push(image);
-						spinner.fail(error.messages);
-					}
-				});
+			await download(url, undefined, {...downloadOptions}).then(async data => {
+				await makeDir(path.dirname(filePath));
+				try {
+					await (sharp(data) as any)[ext]().toFile(filePath);
+					spinner.succeed(`Saved ${filePath}`);
+				} catch (error) {
+					await remove(filePath);
+					failImages.push(image);
+					spinner.fail(error.messages);
+				}
+			});
 		} catch (error) {
 			failImages.push(image);
 			spinner.fail(error.message);

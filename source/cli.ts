@@ -23,28 +23,36 @@ type MangaConfig = {
 
 // conf
 const conf = new Conf<MangaConfig>({
-	schema: {
+	defaults: {
 		get: {
-			type: 'object',
-			properties: {
-				retry: {
-					type: 'integer',
-					default: 3,
-				},
-				ext: {
-					type: 'string',
-					default: 'jpeg',
-				},
-				outputDir: {
-					type: 'string',
-				},
-				focus: {
-					type: 'boolean',
-					default: false,
-				},
-			},
+			retry: 3,
+			ext: 'jpeg',
+			outputDir: '',
+			focus: false,
 		},
 	},
+	// schema: {
+	// 	get: {
+	// 		type: 'object',
+	// 		properties: {
+	// 			retry: {
+	// 				type: 'integer',
+	// 				default: 3,
+	// 			},
+	// 			ext: {
+	// 				type: 'string',
+	// 				default: 'jpeg',
+	// 			},
+	// 			outputDir: {
+	// 				type: 'string',
+	// 			},
+	// 			focus: {
+	// 				type: 'boolean',
+	// 				default: false,
+	// 			},
+	// 		},
+	// 	},
+	// },
 });
 
 cli.command('config [action] [args...]')
