@@ -1,13 +1,13 @@
-import path = require('path');
 import cheerio = require('cheerio');
 import * as CryptoJS from 'crypto-js';
 import {parseScript} from 'esprima';
-import {getContent, downloadUrls} from '../util';
-import {MangaOptions} from '../types';
+import {getContent} from '../util';
+import {Manga} from '../types';
 
-const RES_HOST = 'https://mhcdn.manhuazj.com';
+const SITE = 'manhuadui';
+const RES_HOST = 'https://mhcdn.manhuazj.com/';
 
-export async function download(url: string, flags: MangaOptions) {
+export async function parse(url: string): Promise<Manga> {
 	const html = await getContent(url);
 	const $ = cheerio.load(html);
 	const mangaName = $('.head_title a')
@@ -39,12 +39,12 @@ export async function download(url: string, flags: MangaOptions) {
 			break;
 		}
 	}
-	images = images.map((imgUrl: string) => decodeURI(path.join(RES_HOST, imagePath, imgUrl)));
 
-	await downloadUrls({
+	images = images.map((imgUrl: string) => RES_HOST + imagePath + imgUrl);
+
+	return {
 		images,
 		title,
-		flags,
-		site: 'manhuadui',
-	});
+		site: SITE,
+	};
 }

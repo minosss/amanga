@@ -1,8 +1,10 @@
 import cheerio = require('cheerio');
-import {getContent, downloadUrls} from '../util';
-import {MangaOptions} from '../types';
+import {getContent} from '../util';
+import {Manga} from '../types';
 
-export async function download(url: string, flags: MangaOptions) {
+const SITE = 'lhscan';
+
+export async function parse(url: string): Promise<Manga> {
 	const html = await getContent(url);
 	const $ = cheerio.load(html);
 	const breadcrumb = $('ol.breadcrumb > li');
@@ -22,5 +24,5 @@ export async function download(url: string, flags: MangaOptions) {
 		.map(ele => $(ele).data('src'))
 		.filter(url => url.indexOf('Credit_LHScan') === -1);
 
-	await downloadUrls({images, title, flags, site: 'lhscan'});
+	return {images, title, site: SITE};
 }

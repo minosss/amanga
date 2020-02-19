@@ -1,8 +1,10 @@
 import cheerio = require('cheerio');
-import {getContent, downloadUrls} from '../util';
-import {MangaOptions} from '../types';
+import {getContent} from '../util';
+import {Manga} from '../types';
 
-export async function download(url: string, flags: MangaOptions) {
+const SITE = 'nhentai';
+
+export async function download(url: string): Promise<Manga> {
 	const html = await getContent(url);
 	const $ = cheerio.load(html);
 
@@ -19,5 +21,5 @@ export async function download(url: string, flags: MangaOptions) {
 		)
 		.filter(imgUrl => !!imgUrl);
 
-	await downloadUrls({images, title, flags, site: 'nhentai'});
+	return {images, title, site: SITE};
 }

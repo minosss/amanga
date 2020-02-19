@@ -1,7 +1,7 @@
 import cheerio = require('cheerio');
 import {decompressFromBase64} from 'lz-string';
-import {MangaOptions} from '../types';
-import {getContent, downloadUrls} from '../util';
+import {Manga} from '../types';
+import {getContent} from '../util';
 import {parseScript} from 'esprima';
 import {ExpressionStatement, CallExpression, MemberExpression, Literal} from 'estree';
 
@@ -57,7 +57,7 @@ function parseData(statement: ExpressionStatement) {
 	return jsonData ? JSON.parse(jsonData) : null;
 }
 
-export async function download(url: string, flags: MangaOptions) {
+export async function parse(url: string): Promise<Manga> {
 	const html = await getContent(url);
 	const $ = cheerio.load(html);
 
@@ -90,12 +90,5 @@ export async function download(url: string, flags: MangaOptions) {
 		);
 	}
 
-	const options = {
-		headers: {
-			// 最重要需要设置referer
-			referer: url,
-		},
-	};
-
-	await downloadUrls({images, title, flags, site: 'manhuagui', downloadOptions: options});
+	return {images, title, site: 'manhuagui'};
 }
