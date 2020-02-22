@@ -85,6 +85,10 @@ supportedSites = {
 }
 ```
 
+## Related
+
+- [amanga-cli](https://github.com/minosss/amanga-cli) 下漫画命令行工具
+
 ## License
 
 MIT
