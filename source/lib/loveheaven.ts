@@ -2,7 +2,7 @@ import cheerio = require('cheerio');
 import {getContent} from '../util';
 import {Manga} from '../types';
 
-const SITE = 'lhscan';
+const SITE = 'loveheaven';
 
 export async function parse(url: string): Promise<Manga> {
 	const html = await getContent(url);

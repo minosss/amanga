@@ -43,7 +43,7 @@ function parseData(statement: ExpressionStatement) {
 				const b64Data =
 					((arg.callee as MemberExpression)?.object as Literal)?.value?.toString() ??
 					'';
-				data.push(decompressFromBase64(b64Data).split('|'));
+				data.push((decompressFromBase64(b64Data) || '').split('|'));
 			} else if (arg.type === 'ObjectExpression') {
 				// data.push({})
 			}

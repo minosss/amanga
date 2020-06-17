@@ -4,7 +4,7 @@ import {Manga} from '../types';
 
 const SITE = 'nhentai';
 
-export async function download(url: string): Promise<Manga> {
+export async function parse(url: string): Promise<Manga> {
 	const html = await getContent(url);
 	const $ = cheerio.load(html);
 

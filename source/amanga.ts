@@ -6,8 +6,9 @@ const supportedSites: SupportedSitesMap = {
 	qq: 'qq',
 	nhentai: 'nhentai',
 	yyls: 'yyls',
-	lhscan: 'lhscan',
-	manhuadui: 'manhuadui',
+	loveheaven: 'loveheaven',
+	manhuabei: 'manhuabei',
+	yizhikan: 'yizhikan',
 };
 
 function match1(text: string, regex: string | RegExp) {
