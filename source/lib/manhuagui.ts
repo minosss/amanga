@@ -90,5 +90,5 @@ export async function parse(url: string): Promise<Manga> {
 		);
 	}
 
-	return {images, title, site: 'manhuagui'};
+	return {images, title, site: '漫画柜'};
 }

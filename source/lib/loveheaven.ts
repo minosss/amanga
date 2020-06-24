@@ -2,8 +2,6 @@ import cheerio = require('cheerio');
 import {getContent} from '../util';
 import {Manga} from '../types';
 
-const SITE = 'loveheaven';
-
 export async function parse(url: string): Promise<Manga> {
 	const html = await getContent(url);
 	const $ = cheerio.load(html);
@@ -24,5 +22,5 @@ export async function parse(url: string): Promise<Manga> {
 		.map(ele => $(ele).data('src'))
 		.filter(url => url.indexOf('Credit_LHScan') === -1);
 
-	return {images, title, site: SITE};
+	return {images, title, site: 'LoveHeaven'};
 }

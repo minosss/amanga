@@ -2,8 +2,6 @@ import cheerio = require('cheerio');
 import {getContent} from '../util';
 import {Manga} from '../types';
 
-const SITE = 'nhentai';
-
 export async function parse(url: string): Promise<Manga> {
 	const html = await getContent(url);
 	const $ = cheerio.load(html);
@@ -21,5 +19,5 @@ export async function parse(url: string): Promise<Manga> {
 		)
 		.filter(imgUrl => !!imgUrl);
 
-	return {images, title, site: SITE};
+	return {images, title, site: 'nhentai'};
 }

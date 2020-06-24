@@ -4,7 +4,6 @@ import {parseScript} from 'esprima';
 import {getContent} from '../util';
 import {Manga} from '../types';
 
-const SITE = 'manhuabei';
 const RES_HOST = 'https://mhcdn.manhuazj.com/';
 
 export async function parse(url: string): Promise<Manga> {
@@ -45,6 +44,6 @@ export async function parse(url: string): Promise<Manga> {
 	return {
 		images,
 		title,
-		site: SITE,
+		site: '漫画呗',
 	};
 }
