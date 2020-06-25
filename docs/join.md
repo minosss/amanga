@@ -29,7 +29,9 @@ import {Manga} from '../types';
 // 处理下载
 export async function parse(url: string): Promise<Manga> => {
 	const html = getContent(url);
-	// 处理解析...balabala
+    // 处理解析...balabala
+    // images 图片链接数组
+    // title 单话的标题，在 cli 中当作文件夹名称
 	return {images, title, site: 'hello'};
 };
 ```
