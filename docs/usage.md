@@ -5,6 +5,17 @@ sidebarDepth: 0
 
 # 开始使用
 
+## 参数
+
+当前方法 `amanga(url, content, options)`
+
+- `url: string` **必要**，当前话漫画的页面地址
+- `content: string` 可选，页面的 html 内容
+- `options: MangaOptions` 可选，参数
+  - `got: GotOptions` 可选，网络请求库 Got 的参数
+
+## 当库来使用
+
 比如要解析 `https://www.manhuabei.com/manhua/DrSTONE/312653.html` 好了，先安装库
 
 ```sh
@@ -25,7 +36,19 @@ const amanga = require('amanga');
     console.log(result);
 })();
 // 运行 node test.js
-// 输出 {site, title, images}
+// 输出 {site, title, chapter, images}
+```
+
+直接传入解析内容，比如一些无法直接获取到网页内容的
+
+```js
+// 获取网页
+const url = 'https://www.manhuabei.com/manhua/DrSTONE/312653.html';
+// 用自定义方法获取到网页内容
+const rawHtml = getRawHtmlByUrl(url);
+// 传入解析
+const result = await amanga(url, rawHtml);
+// 输出 {site, title, chapter, images}
 ```
 
 ## 命令行

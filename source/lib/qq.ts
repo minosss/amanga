@@ -1,6 +1,4 @@
-import cheerio = require('cheerio');
-import {Manga} from '../types';
-import {getContent} from '../util';
+import {Manga, MangaParser} from '../types';
 
 interface QQManga {
 	comic: {
@@ -82,36 +80,36 @@ function isNonceLike(nonce: string): boolean {
 	return /^[0-9a-z]{32}$/.test(nonce);
 }
 
-export async function parse(url: string): Promise<Manga> {
-	const html = await getContent(url);
-	const $ = cheerio.load(html);
-	const scripts = $('script').toArray();
+export class Parser implements MangaParser {
+	async parse($: CheerioStatic, _rawHtml: string): Promise<Manga> {
+		const scripts = $('script').toArray();
 
-	let nonce, data;
-	for (const script of scripts) {
-		const text = $(script).html() || '';
-		if (text.trim().startsWith('window')) {
-			const n = eval(text);
-			if (isNonceLike(n)) {
-				nonce = n;
-			}
-		} else if (text.trim().startsWith('var DATA')) {
-			const [, d] = text.match(/'(.*?)'/) || [];
-			if (d) {
-				data = d;
+		let nonce, data;
+		for (const script of scripts) {
+			const text = $(script).html() || '';
+			if (text.trim().startsWith('window')) {
+				const n = eval(text);
+				if (isNonceLike(n)) {
+					nonce = n;
+				}
+			} else if (text.trim().startsWith('var DATA')) {
+				const [, d] = text.match(/'(.*?)'/) || [];
+				if (d) {
+					data = d;
+				}
 			}
 		}
+
+		const result = decode(data, nonce) as QQManga;
+
+		if (!result) {
+			throw new Error('Invalid data');
+		}
+
+		const title = result.comic.title;
+		const chapter = result.chapter.cTitle;
+		const images = result.picture.map(p => p.url);
+
+		return {title, images, chapter, site: 'QQ'};
 	}
-
-	const result = decode(data, nonce) as QQManga;
-
-	if (!result) {
-		throw new Error('Invalid data');
-	}
-
-	const title = result.comic.title;
-	const chapter = result.chapter.cTitle;
-	const images = result.picture.map(p => p.url);
-
-	return {title, images, chapter, site: 'QQ'};
 }

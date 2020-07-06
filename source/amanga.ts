@@ -1,7 +1,8 @@
-import {MangaModule, SupportedSitesMap, Manga} from './types';
+import cheerio from 'cheerio';
+import {MangaParser, SupportedSitesMap, Manga, MangaOptions} from './types';
+import {getContent} from './util';
 
 const supportedSites: SupportedSitesMap = {
-	ishuhui: 'ishuhui',
 	manhuagui: 'manhuagui',
 	qq: 'qq',
 	nhentai: 'nhentai',
@@ -19,19 +20,26 @@ function match1(text: string, regex: string | RegExp) {
 	return '';
 }
 
-async function getMangaModule(url: string): Promise<MangaModule> {
+export async function getMangaParser(url: string): Promise<MangaParser> {
 	const host = match1(url, /https?:\/\/([^\/]+)\//);
 	const domain = match1(host, /(\.[^.]+\.[^.]+)$/) || host;
 	const key = match1(domain, /([^.]+)/);
 
 	if (key in supportedSites) {
-		return await import(`./lib/${supportedSites[key]}`);
+		const {Parser} = await import(`./lib/${supportedSites[key]}`);
+		return new Parser();
 	}
 
 	throw new Error('Site not supported ' + url);
 }
 
-export default async function amanga(url: string): Promise<Manga> {
-	const mm = await getMangaModule(url);
-	return mm.parse(url);
+export default async function amanga(
+	url: string,
+	content?: string,
+	options?: MangaOptions
+): Promise<Manga> {
+	const mm = await getMangaParser(url);
+	const html = content || (await getContent(url, options?.requestOptions));
+	const $ = cheerio.load(html);
+	return mm.parse($, html);
 }

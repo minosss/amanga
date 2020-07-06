@@ -6,5 +6,6 @@ describe('QQ', () => {
 
 		expect(manga.title).toBe('航海王');
 		expect(manga.chapter).toBe('第195话 Mr.武士道');
+		expect(manga.images).toHaveLength(22);
 	});
 });

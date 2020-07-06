@@ -1,3 +1,5 @@
+import {Options as RequestOptions} from 'ky';
+
 // 漫画单话
 export interface Manga {
 	// 来源网站名称
@@ -14,8 +16,12 @@ export interface Manga {
 	images: string[];
 }
 
-export interface MangaModule {
-	parse: (url: string) => Promise<Manga>;
+export interface MangaOptions {
+	requestOptions?: RequestOptions;
+}
+
+export interface MangaParser {
+	parse: ($: CheerioStatic, rawHtml: string) => Promise<Manga>;
 }
 
 export interface SupportedSitesMap {

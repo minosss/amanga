@@ -1,23 +1,20 @@
-import cheerio = require('cheerio');
-import {getContent} from '../util';
-import {Manga} from '../types';
+import {Manga, MangaParser} from '../types';
 
-export async function parse(url: string): Promise<Manga> {
-	const html = await getContent(url);
-	const $ = cheerio.load(html);
+export class Parser implements MangaParser {
+	async parse($: CheerioStatic): Promise<Manga> {
+		const title = $('#info > h1').text();
+		const images = $('#thumbnail-container img.lazyload')
+			.toArray()
+			.map(ele =>
+				$(ele)
+					.data('src')
+					// 1t.jpg 是缩略图
+					?.replace(/([0-9]{1,})t/g, '$1')
+					// 图片路径 https://i.nhentai.net/galleries/...
+					.replace(/\/\/t/g, '//i')
+			)
+			.filter(imgUrl => !!imgUrl);
 
-	const title = $('#info > h1').text();
-	const images = $('#thumbnail-container img.lazyload')
-		.toArray()
-		.map(ele =>
-			$(ele)
-				.data('src')
-				// 1t.jpg 是缩略图
-				?.replace(/([0-9]{1,})t/g, '$1')
-				// 图片路径 https://i.nhentai.net/galleries/...
-				.replace(/\/\/t/g, '//i')
-		)
-		.filter(imgUrl => !!imgUrl);
-
-	return {images, title, site: 'nhentai'};
+		return {images, title, site: 'nhentai'};
+	}
 }

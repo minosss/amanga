@@ -1,7 +1,5 @@
-import cheerio = require('cheerio');
 import {decompressFromBase64} from 'lz-string';
-import {Manga} from '../types';
-import {getContent} from '../util';
+import {Manga, MangaParser} from '../types';
 import {parseScript} from 'esprima';
 import {ExpressionStatement, CallExpression, MemberExpression, Literal} from 'estree';
 
@@ -57,38 +55,39 @@ function parseData(statement: ExpressionStatement) {
 	return jsonData ? JSON.parse(jsonData) : null;
 }
 
-export async function parse(url: string): Promise<Manga> {
-	const html = await getContent(url);
-	const $ = cheerio.load(html);
-
-	let data;
-	const scripts = $('script').toArray();
-	for (const ele of scripts) {
-		const text = $(ele).html();
-		if (text?.indexOf('window[') !== -1) {
-			const st = parseScript(text || '', {});
-			const statement = st.body[0];
-			data = parseData(statement as ExpressionStatement);
+export class Parser implements MangaParser {
+	async parse($: CheerioStatic): Promise<Manga> {
+		let data;
+		const scripts = $('script').toArray();
+		for (const ele of scripts) {
+			const text = $(ele).html();
+			if (text?.indexOf('window[') !== -1) {
+				const st = parseScript(text || '', {});
+				const statement = st.body[0];
+				data = parseData(statement as ExpressionStatement);
+			}
 		}
+
+		if (!data) {
+			throw new Error('Invalid data');
+		}
+
+		// 把漫画名也加进去 漫画名/第几话
+		const title = data.bname;
+		const chapter = data.cname;
+
+		// TODO 验证数据
+		const images = [];
+
+		// 组成图片链接
+		for (const file of data.files) {
+			images.push(
+				decodeURI(
+					`https://i.hamreus.com${data.path}${file}?cid=${data.cid}&md5=${data.sl.md5}`
+				)
+			);
+		}
+
+		return {images, title, chapter, site: '漫画柜'};
 	}
-
-	if (!data) {
-		throw new Error('Invalid data');
-	}
-
-	// 把漫画名也加进去 漫画名/第几话
-	const title = `${data.bname}/${data.cname}`;
-	// TODO 验证数据
-	const images = [];
-
-	// 组成图片链接
-	for (const file of data.files) {
-		images.push(
-			decodeURI(
-				`https://i.hamreus.com${data.path}${file}?cid=${data.cid}&md5=${data.sl.md5}`
-			)
-		);
-	}
-
-	return {images, title, site: '漫画柜'};
 }

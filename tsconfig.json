@@ -1,8 +1,9 @@
 {
 	"extends": "@yme/tsconfig",
 	"compilerOptions": {
-		"outDir": "dist"
-		// "esModuleInterop": true
+		"outDir": "dist",
+		"lib": ["ES2018"],
+		"esModuleInterop": true
 	},
 	"include": ["source"]
 }

@@ -1,26 +1,23 @@
-import cheerio = require('cheerio');
-import {getContent} from '../util';
-import {Manga} from '../types';
+import {Manga, MangaParser} from '../types';
 
-export async function parse(url: string): Promise<Manga> {
-	const html = await getContent(url);
-	const $ = cheerio.load(html);
-	const breadcrumb = $('ol.breadcrumb > li');
-	const chap = breadcrumb
-		.last()
-		.text()
-		.trim();
-	const name = breadcrumb
-		.last()
-		.prev()
-		.text()
-		.trim();
-	const title = `${name}/${chap}`;
+export class Parser implements MangaParser {
+	async parse($: CheerioStatic): Promise<Manga> {
+		const breadcrumb = $('ol.breadcrumb > li');
+		const chapter = breadcrumb
+			.last()
+			.text()
+			.trim();
+		const title = breadcrumb
+			.last()
+			.prev()
+			.text()
+			.trim();
 
-	const images = $('img.chapter-img')
-		.toArray()
-		.map(ele => $(ele).data('src'))
-		.filter(url => url.indexOf('Credit_LHScan') === -1);
+		const images = $('img.chapter-img')
+			.toArray()
+			.map(ele => $(ele).data('src'))
+			.filter(url => url.indexOf('Credit_LHScan') === -1);
 
-	return {images, title, site: 'LoveHeaven'};
+		return {images, title, chapter, site: 'LoveHeaven'};
+	}
 }

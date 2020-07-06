@@ -1,25 +1,23 @@
-import cheerio = require('cheerio');
-import {getContent} from '../util';
-import {Manga} from '../types';
+import {Manga, MangaParser} from '../types';
 
-export async function parse(url: string): Promise<Manga> {
-	const html = await getContent(url);
-	const $ = cheerio.load(html);
+export class Parser implements MangaParser {
+	async parse($: CheerioStatic): Promise<Manga> {
+		const title = $('.aBox a[href*="/comic/"]')
+			.text()
+			.trim();
+		const chapter = $('.aItem a.cur')
+			.text()
+			.trim();
 
-	const name = $('.aBox a[href*="/comic/"]')
-		.text()
-		.trim();
-	const chapter = $('.aItem a.cur')
-		.text()
-		.trim();
+		const images = $('.imgBox img')
+			.toArray()
+			.map(ele => ele.attribs.src);
 
-	const images = $('.imgBox img')
-		.toArray()
-		.map(ele => ele.attribs.src);
-
-	return {
-		site: '一直看漫画',
-		title: `${name}/${chapter}`,
-		images,
-	};
+		return {
+			site: '一直看漫画',
+			title,
+			chapter,
+			images,
+		};
+	}
 }

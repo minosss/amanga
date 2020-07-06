@@ -1,10 +1,6 @@
-import got from 'got';
+import ky from 'ky-universal';
 
-export async function getContent(url: string, options = {}) {
-	const res = await got(url, {timeout: 5000, ...options});
-	return res.body;
+export async function getContent(url: string, options = {}): Promise<string> {
+	const res = await ky(url, {timeout: 5000, ...options});
+	return res.text();
 }
-
-export const listNotSupported = (site: string) => (url: string) => {
-	console.log(`(${site}) list not supported ${url}`);
-};

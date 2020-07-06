@@ -1,6 +1,6 @@
 {
 	"name": "amanga",
-	"version": "0.10.0",
+	"version": "0.11.0",
 	"description": "Manga Downloader",
 	"author": "mino",
 	"repository": "minosss/amanga",
@@ -23,6 +23,8 @@
 		"crypto-js": "3.1.9-1",
 		"esprima": "4.0.1",
 		"got": "10.4.0",
+		"ky": "^0.20.0",
+		"ky-universal": "^0.8.1",
 		"lz-string": "1.4.4"
 	},
 	"keywords": [
