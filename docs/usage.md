@@ -12,7 +12,7 @@ sidebarDepth: 0
 - `url: string` **必要**，当前话漫画的页面地址
 - `content: string` 可选，页面的 html 内容
 - `options: MangaOptions` 可选，参数
-  - `got: GotOptions` 可选，网络请求库 Got 的参数
+  - `requestOptions: RequestOptions` 可选，网络请求库 Got 的参数
 
 ## 当库来使用
 
