@@ -3,3 +3,4 @@ coverage
 amanga
 node_modules
 .DS_Store
+source/cli.ts

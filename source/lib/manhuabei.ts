@@ -5,7 +5,7 @@ import {Manga, MangaParser} from '../types';
 const RES_HOST = 'https://mhcdn.manhuazj.com/';
 
 export class Parser implements MangaParser {
-	async parse($: CheerioStatic): Promise<Manga> {
+	async parse($: cheerio.Root): Promise<Manga> {
 		const title = $('.head_title a')
 			.text()
 			.trim();

@@ -55,8 +55,9 @@ function parseData(statement: ExpressionStatement) {
 	return jsonData ? JSON.parse(jsonData) : null;
 }
 
+// https://www.manhuagui.com/
 export class Parser implements MangaParser {
-	async parse($: CheerioStatic): Promise<Manga> {
+	async parse($: cheerio.Root): Promise<Manga> {
 		let data;
 		const scripts = $('script').toArray();
 		for (const ele of scripts) {

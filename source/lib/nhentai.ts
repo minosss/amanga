@@ -1,7 +1,8 @@
 import {Manga, MangaParser} from '../types';
 
+// https://nhentai.net
 export class Parser implements MangaParser {
-	async parse($: CheerioStatic): Promise<Manga> {
+	async parse($: cheerio.Root): Promise<Manga> {
 		const title = $('#info > h1').text();
 		const images = $('#thumbnail-container img.lazyload')
 			.toArray()

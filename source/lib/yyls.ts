@@ -1,7 +1,7 @@
 import {Manga, MangaParser} from '../types';
 
 export class Parser implements MangaParser {
-	async parse($: CheerioStatic): Promise<Manga> {
+	async parse($: cheerio.Root): Promise<Manga> {
 		// 默认标题是 漫画名 - 第几话 => 漫画名/第几话
 		const title = $('h1.entry-title')
 			.text()

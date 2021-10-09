@@ -1,7 +1,7 @@
 import {Manga, MangaParser} from '../types';
 
 export class Parser implements MangaParser {
-	async parse($: CheerioStatic): Promise<Manga> {
+	async parse($: cheerio.Root): Promise<Manga> {
 		const breadcrumb = $('ol.breadcrumb > li');
 		const chapter = breadcrumb
 			.last()

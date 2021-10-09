@@ -80,15 +80,16 @@ function isNonceLike(nonce: string): boolean {
 	return /^[0-9a-z]{32}$/.test(nonce);
 }
 
+// https://ac.qq.com/
 export class Parser implements MangaParser {
-	async parse($: CheerioStatic, _rawHtml: string): Promise<Manga> {
+	async parse($: cheerio.Root, _rawHtml: string): Promise<Manga> {
 		const scripts = $('script').toArray();
 
 		let nonce, data;
 		for (const script of scripts) {
 			const text = $(script).html() || '';
 			if (text.trim().startsWith('window')) {
-				const n = eval(text);
+				const n = eval(`;let window={};${text}`);
 				if (isNonceLike(n)) {
 					nonce = n;
 				}

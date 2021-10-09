@@ -1,6 +1,6 @@
 {
 	"name": "amanga",
-	"version": "0.11.1",
+	"version": "0.11.2",
 	"description": "Manga Downloader",
 	"author": "mino",
 	"repository": "minosss/amanga",
@@ -9,9 +9,7 @@
 	"license": "MIT",
 	"prettier": "@yme/prettier-config",
 	"scripts": {
-		"test": "jest",
 		"build": "del-cli dist && tsc",
-		"prepare": "npm run build",
 		"docs:dev": "vuepress dev docs",
 		"docs:build": "vuepress build docs"
 	},
@@ -19,34 +17,30 @@
 		"dist"
 	],
 	"dependencies": {
-		"cheerio": "1.0.0-rc.3",
-		"crypto-js": "3.1.9-1",
+		"axios": "^0.22.0",
+		"cheerio": "1.0.0-rc.10",
+		"crypto-js": "4.1.1",
 		"esprima": "4.0.1",
-		"ky": "^0.20.0",
-		"ky-universal": "^0.8.1",
 		"lz-string": "1.4.4"
 	},
 	"keywords": [
 		"manga"
 	],
 	"devDependencies": {
-		"@types/cheerio": "^0.22.16",
-		"@types/crypto-js": "^3.1.43",
+		"@types/cheerio": "^0.22.30",
+		"@types/crypto-js": "4.0.2",
 		"@types/esprima": "^4.0.2",
-		"@types/jest": "^26.0.0",
 		"@types/lz-string": "^1.3.33",
-		"@types/node": "^13.7.0",
+		"@types/node": "^14.17.21",
 		"@yme/prettier-config": "^0.1.0",
 		"@yme/tsconfig": "^0.1.0",
-		"del-cli": "^3.0.0",
-		"husky": "^4.2.1",
-		"jest": "26.x",
-		"lint-staged": "^8.1.5",
+		"del-cli": "^4.0.1",
+		"husky": "^7.0.2",
+		"lint-staged": "^11.2.0",
 		"pinyin": "^2.9.1",
-		"prettier": "^1.19.1",
-		"ts-jest": "^26.1.0",
-		"ts-node": "^8.6.2",
-		"typescript": "^3.7.5",
+		"prettier": "^2.4.1",
+		"ts-node": "^10.2.1",
+		"typescript": "^4.4.3",
 		"vuepress": "^1.5.2"
 	},
 	"husky": {

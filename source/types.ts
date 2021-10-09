@@ -21,7 +21,7 @@ export interface MangaOptions {
 }
 
 export interface MangaParser {
-	parse: ($: CheerioStatic, rawHtml: string) => Promise<Manga>;
+	parse: ($: cheerio.Root, rawHtml: string) => Promise<Manga>;
 }
 
 export interface SupportedSitesMap {

@@ -9,7 +9,6 @@ const supportedSites: SupportedSitesMap = {
 	yyls: 'yyls',
 	loveheaven: 'loveheaven',
 	manhuabei: 'manhuabei',
-	yizhikan: 'yizhikan',
 };
 
 function match1(text: string, regex: string | RegExp) {
@@ -33,13 +32,11 @@ export async function getMangaParser(url: string): Promise<MangaParser> {
 	throw new Error('Site not supported ' + url);
 }
 
-export default async function amanga(
-	url: string,
-	content?: string,
-	options?: MangaOptions
-): Promise<Manga> {
+async function amanga(url: string, content?: string, options?: MangaOptions): Promise<Manga> {
 	const mm = await getMangaParser(url);
 	const html = content || (await getContent(url, options?.requestOptions));
 	const $ = cheerio.load(html);
 	return mm.parse($, html);
 }
+
+export default amanga;
