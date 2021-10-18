@@ -1,14 +1,13 @@
-import axios from 'axios';
-
-axios.interceptors.request.use((config) => {
-    config.headers = {
-        ...config.headers,
-        'user-agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4450.0 Safari/537.36'
-    };
-    return config;
-});
+import got from 'got';
 
 export async function getContent(url: string, options = {}): Promise<string> {
-	const res = await axios(url, {timeout: 5000, responseType: 'text', ...options});
-	return res.data;
+	const res = await got.get(url, {
+		timeout: 20000,
+		headers: {
+			'User-Agent':
+				'Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:94.0) Gecko/20100101 Firefox/94.0',
+		},
+		...options,
+	});
+	return res.body;
 }
