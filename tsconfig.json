@@ -1,13 +1,12 @@
 {
 	"extends": "@yme/tsconfig",
 	"compilerOptions": {
+		"target": "ES2020",
+		"module": "ESNext",
+		"declaration": false,
 		"outDir": "dist",
-        "target": "ES2020",
-        "module": "CommonJS",
-		"lib": ["ES2020"],
-        "allowJs": true,
-		"esModuleInterop": true,
-        "noUnusedLocals": false
+		"resolveJsonModule": false
 	},
-	"include": ["source"]
+	"include": ["src"],
+	"exclude": ["node_modules"]
 }

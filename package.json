@@ -1,60 +1,54 @@
 {
-	"name": "amanga",
-	"version": "0.11.2",
-	"description": "Manga Downloader",
-	"author": "mino",
-	"repository": "minosss/amanga",
-	"main": "dist",
-	"types": "dist",
-	"license": "MIT",
-	"prettier": "@yme/prettier-config",
-	"scripts": {
-		"build": "del-cli dist && tsc",
-		"docs:dev": "vuepress dev docs",
-		"docs:build": "vuepress build docs"
-	},
-	"files": [
-		"dist"
-	],
-	"dependencies": {
-		"cheerio": "1.0.0-rc.10",
-		"crypto-js": "4.1.1",
-		"esprima": "4.0.1",
-		"got": "^9.6.0",
-		"lz-string": "1.4.4"
-	},
-	"keywords": [
-		"manga"
-	],
-	"devDependencies": {
-		"@types/cheerio": "^0.22.30",
-		"@types/crypto-js": "4.0.2",
-		"@types/esprima": "^4.0.2",
-		"@types/global-agent": "^2.1.1",
-		"@types/got": "^9.6.12",
-		"@types/lz-string": "^1.3.33",
-		"@types/node": "^14.17.21",
-		"@yme/prettier-config": "^0.1.0",
-		"@yme/tsconfig": "^0.1.0",
-		"del-cli": "^4.0.1",
-		"global-agent": "^3.0.0",
-		"husky": "^7.0.2",
-		"lint-staged": "^11.2.0",
-		"pinyin": "^2.9.1",
-		"prettier": "^2.4.1",
-		"ts-node": "^10.2.1",
-		"typescript": "^4.4.3",
-		"vuepress": "^1.5.2"
-	},
-	"lint-staged": {
-		"*.{ts}": [
-			"prettier --parser=typescript --write"
-		],
-		"*.{js,json}": [
-			"prettier --write"
-		]
-	},
-	"engines": {
-		"node": ">=12.0"
-	}
+  "name": "amanga",
+  "description": "Manga Downloader",
+  "version": "0.11.2",
+  "type": "module",
+  "author": "mino",
+  "repository": "minosss/amanga",
+  "license": "MIT",
+  "keywords": [
+    "manga",
+    "downloader"
+  ],
+  "main": "./dist/main.cjs",
+  "module": "./dist/main.js",
+  "bin": {
+    "amanga": "./dist/cli.js"
+  },
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "build": "tsup"
+  },
+  "dependencies": {
+    "@yme/argv": "^0.1.2",
+    "chalk": "^5.2.0",
+    "cheerio": "1.0.0-rc.12",
+    "crypto-js": "4.1.1",
+    "esprima": "4.0.1",
+    "got": "^12.6.1",
+    "hpagent": "^1.2.0",
+    "lz-string": "1.4.4",
+    "ora": "^6.1.2",
+    "pako": "^2.1.0",
+    "tough-cookie": "^4.1.2"
+  },
+  "devDependencies": {
+    "@types/cheerio": "^0.22.31",
+    "@types/crypto-js": "4.0.2",
+    "@types/esprima": "^4.0.3",
+    "@types/lz-string": "^1.3.34",
+    "@types/node": "^18.11.18",
+    "@types/pako": "^2.0.0",
+    "@types/tough-cookie": "^4.0.2",
+    "@yme/eslint-config-typescript": "^0.3.1",
+    "@yme/tsconfig": "^1.0.0",
+    "eslint": "^8.41.0",
+    "tsup": "^6.7.0",
+    "typescript": "^5.1.3"
+  },
+  "engines": {
+    "node": ">=16.0"
+  }
 }
